@@ -1,0 +1,896 @@
+{
+    "name": "Integration Tally, Google Docs",
+    "flow": [
+        {
+            "id": 1,
+            "module": "tally:watchNewResponse",
+            "version": 1,
+            "parameters": {
+                "__IMTHOOK__": 3684864
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": 0,
+                    "y": 0
+                },
+                "restore": {
+                    "parameters": {
+                        "__IMTHOOK__": {
+                            "data": {
+                                "editable": "false"
+                            },
+                            "label": "My New Response webhook"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTHOOK__",
+                        "type": "hook:tally",
+                        "label": "Webhook",
+                        "required": true
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "eventId",
+                        "type": "text",
+                        "label": "Event ID"
+                    },
+                    {
+                        "name": "responseId",
+                        "type": "text",
+                        "label": "Response ID"
+                    },
+                    {
+                        "name": "submissionId",
+                        "type": "text",
+                        "label": "Submission ID"
+                    },
+                    {
+                        "name": "respondentId",
+                        "type": "text",
+                        "label": "Respondent ID"
+                    },
+                    {
+                        "name": "formId",
+                        "type": "text",
+                        "label": "Form ID"
+                    },
+                    {
+                        "name": "formName",
+                        "type": "text",
+                        "label": "Form Name"
+                    },
+                    {
+                        "name": "createdAt",
+                        "type": "date",
+                        "label": "Created at"
+                    },
+                    {
+                        "name": "submissionPdfUrl",
+                        "type": "url",
+                        "label": "Submission PDF URL"
+                    },
+                    {
+                        "name": "submissionPreviewUrl",
+                        "type": "url",
+                        "label": "Submission Preview URL"
+                    },
+                    {
+                        "name": "fields",
+                        "spec": [
+                            {
+                                "name": "Numéro de facture",
+                                "type": "text"
+                            },
+                            {
+                                "name": "Nom du client",
+                                "type": "text"
+                            },
+                            {
+                                "name": "E-mail du client",
+                                "type": "email"
+                            },
+                            {
+                                "name": "Adresse du client",
+                                "type": "text"
+                            },
+                            {
+                                "name": "Description de la prestation",
+                                "type": "text"
+                            },
+                            {
+                                "name": "Quantité",
+                                "type": "number"
+                            },
+                            {
+                                "name": "Prix unitaire HT",
+                                "type": "number"
+                            },
+                            {
+                                "name": "Taux de TVA",
+                                "type": "number"
+                            },
+                            {
+                                "name": "Date d’échéance",
+                                "type": "text"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Fields"
+                    },
+                    {
+                        "name": "fieldsById",
+                        "spec": [
+                            {
+                                "name": "question_JJbQEY",
+                                "type": "text",
+                                "label": "Numéro de facture"
+                            },
+                            {
+                                "name": "question_g7XE81",
+                                "type": "text",
+                                "label": "Nom du client"
+                            },
+                            {
+                                "name": "question_yErB8p",
+                                "type": "email",
+                                "label": "E-mail du client"
+                            },
+                            {
+                                "name": "question_XMdp6d",
+                                "type": "text",
+                                "label": "Adresse du client"
+                            },
+                            {
+                                "name": "question_8PVXbY",
+                                "type": "text",
+                                "label": "Description de la prestation"
+                            },
+                            {
+                                "name": "question_0JzKq0",
+                                "type": "number",
+                                "label": "Quantité"
+                            },
+                            {
+                                "name": "question_zr4k88",
+                                "type": "number",
+                                "label": "Prix unitaire HT"
+                            },
+                            {
+                                "name": "question_5GoJaP",
+                                "type": "number",
+                                "label": "Taux de TVA"
+                            },
+                            {
+                                "name": "question_dDXOJy",
+                                "type": "text",
+                                "label": "Date d’échéance"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Fields by ID"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 2,
+            "module": "google-docs:createADocumentFromTemplate",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 5290236
+            },
+            "mapper": {
+                "from": "drive",
+                "name": "{{1.fields.`Numéro de facture`}}",
+                "select": "dropdown",
+                "document": "/1BNZMZUofpYeH4zjQqYdZydnLabIBN5yW/1jW8PAKn2RBRPjpQRE-tl644vVG8vCAV_sZSmYPj4gUk",
+                "folderId": "/13kLZnTaDkoug04KgLcK2UYJrh22KAhAz",
+                "requests": {
+                    "quantite": "{{1.fieldsById.question_0JzKq0}}",
+                    "taux_tva": "{{1.fieldsById.question_5GoJaP}}",
+                    "total_ht": "{{1.fieldsById.question_5GoJaP}}",
+                    "total_ttc": "12000",
+                    "client_nom": "{{1.fields.`Nom du client`}}",
+                    "description": "{{1.fields.`Description de la prestation`}}",
+                    "montant_tva": "1525",
+                    "client_email": "{{1.fields.`E-mail du client`}}",
+                    "client_siren": "123 154 674",
+                    "date_facture": "{{1.fields.`Date d’échéance`}}",
+                    "date_echeance": "{{1.fieldsById.question_dDXOJy}}",
+                    "client_adresse": "{{1.fields.`Adresse du client`}}",
+                    "numero_facture": "{{1.fieldsById.question_JJbQEY}}",
+                    "prix_unitaire_ht": "{{1.fieldsById.question_zr4k88}}"
+                },
+                "destination": "drive"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 300,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "from": {
+                            "label": "My Drive"
+                        },
+                        "select": {
+                            "label": "By Dropdown"
+                        },
+                        "document": {
+                            "path": [
+                                "IONIS DOCUMENT ",
+                                "Facture ANFR TEST"
+                            ]
+                        },
+                        "folderId": {
+                            "mode": "chose",
+                            "path": [
+                                "DOCUMENT PERSO"
+                            ]
+                        },
+                        "destination": {
+                            "label": "My Drive"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "google"
+                            },
+                            "label": "My Google connection (aboud083@gmail.com)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:google",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "select",
+                        "type": "select",
+                        "label": "Create a Document from a Template",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "map",
+                                "dropdown"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "type": "text",
+                        "label": "Title",
+                        "required": true
+                    },
+                    {
+                        "name": "destination",
+                        "type": "select",
+                        "label": "New Drive Location",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "drive",
+                                "share",
+                                "team"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "from",
+                        "type": "select",
+                        "label": "Choose a Drive",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "drive",
+                                "share",
+                                "team"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "document",
+                        "type": "file",
+                        "label": "Document ID",
+                        "required": true
+                    },
+                    {
+                        "name": "requests",
+                        "spec": [
+                            {
+                                "name": "numero_facture",
+                                "type": "any"
+                            },
+                            {
+                                "name": "date_facture",
+                                "type": "any"
+                            },
+                            {
+                                "name": "date_echeance",
+                                "type": "any"
+                            },
+                            {
+                                "name": "client_nom",
+                                "type": "any"
+                            },
+                            {
+                                "name": "client_adresse",
+                                "type": "any"
+                            },
+                            {
+                                "name": "client_siren",
+                                "type": "any"
+                            },
+                            {
+                                "name": "client_email",
+                                "type": "any"
+                            },
+                            {
+                                "name": "description",
+                                "type": "any"
+                            },
+                            {
+                                "name": "quantite",
+                                "type": "any"
+                            },
+                            {
+                                "name": "prix_unitaire_ht",
+                                "type": "any"
+                            },
+                            {
+                                "name": "total_ht",
+                                "type": "any"
+                            },
+                            {
+                                "name": "taux_tva",
+                                "type": "any"
+                            },
+                            {
+                                "name": "montant_tva",
+                                "type": "any"
+                            },
+                            {
+                                "name": "total_ttc",
+                                "type": "any"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Values"
+                    },
+                    {
+                        "name": "folderId",
+                        "type": "folder",
+                        "label": "New Document's Location",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 3,
+            "module": "google-drive:getAFile",
+            "version": 4,
+            "parameters": {
+                "__IMTCONN__": 10667245
+            },
+            "mapper": {
+                "file": "/{{2.id}}",
+                "select": "value",
+                "destination": "drive",
+                "formatDrawings": "image/jpeg",
+                "formatDocuments": "application/pdf",
+                "formatSpreadsheets": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "formatPresentations": "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 600,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "file": {
+                            "path": [
+                                "{{2.id}}"
+                            ]
+                        },
+                        "select": {
+                            "label": "Select from the list"
+                        },
+                        "destination": {
+                            "label": "My Drive"
+                        },
+                        "formatDrawings": {
+                            "label": "JPEG"
+                        },
+                        "formatDocuments": {
+                            "label": "PDF"
+                        },
+                        "formatSpreadsheets": {
+                            "label": "MS Excel"
+                        },
+                        "formatPresentations": {
+                            "label": "MS PowerPoint"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "google-drive"
+                            },
+                            "label": "abou's Google Drive connection (aboud083@gmail.com)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:google-restricted,google-drive",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "select",
+                        "type": "select",
+                        "label": "Enter a File ID",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "map",
+                                "value"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "formatDocuments",
+                        "type": "select",
+                        "label": "Convert Google Documents Files to Format",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                                "application/pdf",
+                                "application/vnd.oasis.opendocument.text",
+                                "text/html",
+                                "text/plain",
+                                "application/rtf",
+                                "text/markdown"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "formatSpreadsheets",
+                        "type": "select",
+                        "label": "Convert Google Spreadsheets Files to Format",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                "application/x-vnd.oasis.opendocument.spreadsheet",
+                                "application/pdf",
+                                "text/csv"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "formatPresentations",
+                        "type": "select",
+                        "label": "Convert Google Slides Files to Format",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                                "application/pdf"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "formatDrawings",
+                        "type": "select",
+                        "label": "Convert Google Drawings Files to Format",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "image/jpeg",
+                                "image/png",
+                                "image/svg+xml",
+                                "application/pdf"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "destination",
+                        "type": "select",
+                        "label": "Choose a Drive",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "drive",
+                                "share",
+                                "team"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "file",
+                        "type": "file",
+                        "label": "File ID",
+                        "required": true
+                    }
+                ],
+                "advanced": true
+            }
+        },
+        {
+            "id": 6,
+            "module": "google-drive:uploadAFile",
+            "version": 4,
+            "parameters": {
+                "__IMTCONN__": 10667245
+            },
+            "mapper": {
+                "data": "{{3.data}}",
+                "select": "value",
+                "convert": false,
+                "filename": "{{3.name}}",
+                "folderId": "/13kLZnTaDkoug04KgLcK2UYJrh22KAhAz",
+                "destination": "drive"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 900,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "select": {
+                            "label": "Select from the list"
+                        },
+                        "folderId": {
+                            "mode": "chose",
+                            "path": [
+                                "DOCUMENT PERSO"
+                            ]
+                        },
+                        "destination": {
+                            "label": "My Drive"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "google-drive"
+                            },
+                            "label": "abou's Google Drive connection (aboud083@gmail.com)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:google-restricted,google-drive",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "select",
+                        "type": "select",
+                        "label": "Enter a Folder ID",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "map",
+                                "value"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "type": "text",
+                        "label": "New File Name"
+                    },
+                    {
+                        "name": "filename",
+                        "type": "text",
+                        "label": "File Name",
+                        "required": true
+                    },
+                    {
+                        "name": "data",
+                        "type": "buffer",
+                        "label": "Data",
+                        "required": true
+                    },
+                    {
+                        "name": "convert",
+                        "type": "boolean",
+                        "label": "Convert a File",
+                        "required": true
+                    },
+                    {
+                        "name": "destination",
+                        "type": "select",
+                        "label": "New Drive Location",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "drive",
+                                "share",
+                                "team"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "folderId",
+                        "type": "folder",
+                        "label": "New Folder Location",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 7,
+            "module": "markdown:Compile",
+            "version": 2,
+            "parameters": {},
+            "mapper": {
+                "gfm": true,
+                "data": "{{6.id}}",
+                "sanitize": false
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1200,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "gfm": {
+                            "mode": "chose"
+                        },
+                        "sanitize": {
+                            "mode": "chose"
+                        }
+                    }
+                },
+                "expect": [
+                    {
+                        "name": "data",
+                        "type": "text",
+                        "label": "Markdown"
+                    },
+                    {
+                        "name": "gfm",
+                        "type": "boolean",
+                        "label": "GitHub Flavored Markdown",
+                        "required": true
+                    },
+                    {
+                        "name": "sanitize",
+                        "type": "boolean",
+                        "label": "Sanitize",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 8,
+            "module": "google-email:sendAnEmail",
+            "version": 4,
+            "parameters": {
+                "__IMTCONN__": 9408218
+            },
+            "mapper": {
+                "to": [
+                    "ad776630349@gmail.com"
+                ],
+                "content": "<div style=\"margin:0; padding:30px; background-color:#f4f6f8; font-family:Arial, sans-serif; color:#1f2937;\">\r\n  <div style=\"max-width:620px; margin:0 auto; background-color:#ffffff; border-radius:12px; overflow:hidden; box-shadow:0 4px 14px rgba(0,0,0,0.08);\">\r\n\r\n    <div style=\"background-color:#123b6d; padding:24px 30px;\">\r\n      <h1 style=\"margin:0; color:#ffffff; font-size:22px;\">\r\n        Facture disponible\r\n      </h1>\r\n    </div>\r\n\r\n    <div style=\"padding:30px;\">\r\n      <p style=\"margin:0 0 18px; font-size:16px;\">\r\n        Bonjour,\r\n      </p>\r\n\r\n      <p style=\"margin:0 0 18px; font-size:16px; line-height:1.6;\">\r\n        Votre facture <strong>{{1.fields.`Numéro de facture`}}</strong> a bien été générée au format PDF.\r\n      </p>\r\n\r\n      <p style=\"margin:0 0 24px; font-size:16px; line-height:1.6;\">\r\n        Elle est maintenant disponible dans votre espace Google Drive sécurisé.\r\n      </p>\r\n\r\n      <div style=\"text-align:center; margin:30px 0;\">\r\n        <a href=\"COLLEZ_ICI_LE_LIEN_GOOGLE_DRIVE\"\r\n           style=\"display:inline-block; padding:14px 26px; background-color:#f5a623; color:#ffffff; text-decoration:none; border-radius:7px; font-size:16px; font-weight:bold;\">\r\n          Consulter la facture\r\n        </a>\r\n      </div>\r\n\r\n      <div style=\"background-color:#f8fafc; border-left:4px solid #123b6d; padding:15px; margin-top:25px;\">\r\n        <p style=\"margin:0; font-size:14px; line-height:1.6;\">\r\n          <strong>Nom du fichier :</strong> {{1.fields.`Numéro de facture`}}.pdf<br>\r\n          <strong>Espace :</strong> Google Drive – Facture ANFR\r\n        </p>\r\n      </div>\r\n\r\n      <p style=\"margin:28px 0 0; font-size:15px; line-height:1.6;\">\r\n        Cordialement,<br>\r\n        <strong>Service de facturation</strong>\r\n      </p>\r\n    </div>\r\n\r\n    <div style=\"padding:16px; background-color:#eef2f6; text-align:center; font-size:12px; color:#6b7280;\">\r\n      Message envoyé automatiquement par le scénario de génération de factures.\r\n    </div>\r\n\r\n  </div>\r\n</div>",
+                "subject": "Votre facture {{1.fields.`Numéro de facture`}} est disponible",
+                "bodyType": "rawHtml"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1500,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "cc": {
+                            "mode": "chose"
+                        },
+                        "to": {
+                            "mode": "chose",
+                            "items": [
+                                null
+                            ]
+                        },
+                        "bcc": {
+                            "mode": "chose"
+                        },
+                        "from": {
+                            "mode": "chose",
+                            "label": "Empty"
+                        },
+                        "bodyType": {
+                            "label": "Raw HTML"
+                        },
+                        "attachments": {
+                            "mode": "chose"
+                        },
+                        "emailHeaders": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "google-email"
+                            },
+                            "label": "abou's Gmail connection (aboud083@gmail.com)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:google-email",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "to",
+                        "spec": {
+                            "name": "value",
+                            "type": "email",
+                            "label": "Recipient email address",
+                            "required": true,
+                            "validate": true
+                        },
+                        "type": "array",
+                        "label": "To",
+                        "required": true
+                    },
+                    {
+                        "name": "subject",
+                        "type": "text",
+                        "label": "Subject"
+                    },
+                    {
+                        "name": "bodyType",
+                        "type": "select",
+                        "label": "Body type",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "rawHtml",
+                                "collection"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "attachments",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "filename",
+                                    "type": "filename",
+                                    "label": "File name",
+                                    "required": true,
+                                    "semantic": "file:name"
+                                },
+                                {
+                                    "name": "data",
+                                    "type": "buffer",
+                                    "label": "Data",
+                                    "required": true,
+                                    "semantic": "file:data"
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Attachment"
+                        },
+                        "type": "array",
+                        "label": "Attachments"
+                    },
+                    {
+                        "name": "from",
+                        "type": "select",
+                        "label": "From"
+                    },
+                    {
+                        "name": "cc",
+                        "spec": {
+                            "name": "value",
+                            "type": "email",
+                            "label": "Recipient email address"
+                        },
+                        "type": "array",
+                        "label": "CC recipients"
+                    },
+                    {
+                        "name": "bcc",
+                        "spec": {
+                            "name": "value",
+                            "type": "email",
+                            "label": "Recipient email address"
+                        },
+                        "type": "array",
+                        "label": "BCC recipients"
+                    },
+                    {
+                        "name": "emailHeaders",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "key",
+                                    "type": "text",
+                                    "label": "Key",
+                                    "required": true
+                                },
+                                {
+                                    "name": "value",
+                                    "type": "text",
+                                    "label": "Value"
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Email header"
+                        },
+                        "type": "array",
+                        "label": "Additional email headers"
+                    },
+                    {
+                        "name": "content",
+                        "type": "text",
+                        "label": "Content"
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata": {
+        "instant": true,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "eu1.make.com",
+        "notes": []
+    }
+}
